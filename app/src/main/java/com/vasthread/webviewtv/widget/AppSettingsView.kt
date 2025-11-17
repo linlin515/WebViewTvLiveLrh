@@ -25,39 +25,41 @@ class AppSettingsView @JvmOverloads constructor(
 
     private val rvSettings: RecyclerView
 
-    private val settings = arrayOf(
-        SettingItem(
-            R.string.channel_list,
-            SettingsManager.getPlaylistNames(),
-            SettingsManager.getSelectedPlaylistPosition(),
-            onItemSelect = SettingsManager::setSelectedPlaylistPosition
-        ),
-        SettingItem(
-            R.string.max_loading_time,
-            context.resources.getStringArray(R.array.loading_time_text),
-            context.resources.getIntArray(R.array.loading_time_value).indexOf(SettingsManager.getMaxLoadingTime()),
-            onItemSelect = {
-                SettingsManager.setMaxLoadingTime(context.resources.getIntArray(R.array.loading_time_value)[it])
-            }
-        ),
-        SettingItem(
-            R.string.refresh_channel_list,
-            onClick = { PlaylistManager.setLastUpdate(0, true) }
-        ),
-        SettingItem(
-            R.string.tbs_debug,
-            onClick = {
-                context.startActivity(Intent(context, TbsDebugActivity::class.java)
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-            }
-        ),
-        SettingItem(
-            R.string.web_view_touchable,
-            arrayOf(context.getString(R.string.off), context.getString(R.string.on)),
-            if (SettingsManager.isWebViewTouchable()) 1 else 0,
-            onItemSelect = { SettingsManager.setWebViewTouchable(it != 0) }
+    private val settings: Array<SettingItem> by lazy {
+        arrayOf(
+            SettingItem(
+                R.string.channel_list,
+                SettingsManager.getPlaylistNames(),
+                SettingsManager.getSelectedPlaylistPosition(),
+                onItemSelect = SettingsManager::setSelectedPlaylistPosition
+            ),
+            SettingItem(
+                R.string.max_loading_time,
+                context.resources.getStringArray(R.array.loading_time_text),
+                context.resources.getIntArray(R.array.loading_time_value).indexOf(SettingsManager.getMaxLoadingTime()),
+                onItemSelect = {
+                    SettingsManager.setMaxLoadingTime(context.resources.getIntArray(R.array.loading_time_value)[it])
+                }
+            ),
+            SettingItem(
+                R.string.refresh_channel_list,
+                onClick = { PlaylistManager.setLastUpdate(0, true) }
+            ),
+            SettingItem(
+                R.string.tbs_debug,
+                onClick = {
+                    context.startActivity(Intent(context, TbsDebugActivity::class.java)
+                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                }
+            ),
+            SettingItem(
+                R.string.web_view_touchable,
+                arrayOf(context.getString(R.string.off), context.getString(R.string.on)),
+                if (SettingsManager.isWebViewTouchable()) 1 else 0,
+                onItemSelect = { SettingsManager.setWebViewTouchable(it != 0) }
+            )
         )
-    )
+    }
 
     init {
         isClickable = true
